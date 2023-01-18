@@ -1,5 +1,6 @@
 # importing speech recognition package from google api
 from asyncio import sleep
+import time
 
 import speech_recognition as sr
 import playsound  # to play saved mp3 file
@@ -73,32 +74,71 @@ def get_audio(wait_seconds):
         return "all"
 
 
-# def listen_audio():
-#     rObject = sr.Recognizer()
-#     audio = ''
-#
-#     with sr.Microphone() as source:
-#         rObject.adjust_for_ambient_noise(source)
-#         print("Listing...")
-#         # recording the audio using speech recognition
-#         audio = rObject.listen_in_background(source, catch_audio)
+def assistant():
+    global p
+    welcomeSpeak()
+    while (1):
+        TextToSpeak("Tell the command after Beep Sound")
+        command = get_audio(5)
+        if command.__contains__("search for"):
+            while True:
+                TextToSpeak("Please Tell me the book name after Beep Sound")
+                bookName = get_audio(8)
+                parameters = {
+                    "query": bookName
+                }
+                response = requests.get("http://35.200.151.7/v1/books/", params=parameters)
+                # dataset = response.json()['books']
+                dataset = json.loads(response.text)['books']
+                print(type(dataset))
+                if len(dataset) > 0:
+                    break
+                else:
+                    TextToSpeak("No matches Found!")
+            i = 1
+            for tempBook in dataset:
+                title = tempBook['title']
+                print(str(i) + ". Book Name is " + title)
+                TextToSpeak(str(i) + ". Book Name is " + title)
+                i = i + 1
+            TextToSpeak("Please Select your Audio Book Number in key board")
+            # print("i = " + str(i))
+            value = 9
+            digit = range(0, 9)
+            while not (value in digit):
+                value = int(keyboard.read_key())
+                value = value - 1
+                # print("Value is " + str(value))
+            id = dataset[value]['id']
+            response2 = requests.get("http://35.200.151.7/v1/books/" + str(id) + "/")
+            jdata = json.loads(response2.text)
+            chapters = jdata['books']['chapters']
+            print(chapters[0]['audio_url'])
+            p = vlc.MediaPlayer("http://35.200.151.7/" + chapters[0]['audio_url'])
+            p.play()
+            while (True):
+                if p.is_playing():
+                    if keyboard.is_pressed('a'):
+                        p.pause()
+                    elif keyboard.is_pressed(hotkey=keyboard.KEY_UP):
+                        print(p.audio_get_volume)
+                        p.audio_set_volume(100)
+                    elif keyboard.is_pressed(hotkey=keyboard.KEY_DOWN):
+                        print(p.audio_get_volume)
+                        p.audio_set_volume(40)
+                elif keyboard.is_pressed('b'):
+                    break
+                else:
+                    p.play()
+                sleep(1)
+
+            # while(vlc.libvlc_media_player_is_playing(p_mi=p)):
 
 
-# def catch_audio():
-#     text = 'stop'
-#     try:
-#         rObject = sr.Recognizer()
-#         text = rObject.recognize_google(self.audio, language='en-US')
-#     except:
-#         print("small error")
-#
-#     print("You said: " + text)
-#     if text.__contains__('play') or text.__contains__('pause'):
-#         vlc.libvlc_media_player_set_pause(p, vlc.libvlc_media_player_is_playing())
-#     elif text.__contains__('volume down'):
-#         vlc.libvlc_audio_set_volume(p_mi=p, i_volume=(vlc.libvlc_audio_get_volume(p_mi=p) - 25))
-#     elif text.__contains__('volume up'):
-#         vlc.libvlc_audio_set_volume(p_mi=p, i_volume=(vlc.libvlc_audio_get_volume(p_mi=p) + 25))
+
+        elif command.__contains__("exit"):
+            TextToSpeak("thank you for using AudiMax!")
+            exit(100)
 
 
 # Driver Code

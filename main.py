@@ -1,4 +1,6 @@
 # importing PyQt5 for gui
+import time
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -8,26 +10,25 @@ from PIL import ImageTk, Image
 import assistant as sp
 
 
+def assistant():
+    sp.TextToSpeak("")
+    sp.TextToSpeak("")
+    sp.TextToSpeak("")
+    # sp.welcomeSpeak()
+    sp.assistant()
+
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        # setting title
-        # self.setWindowTitle("Python ")
         self.setWindowFlag(Qt.FramelessWindowHint)
         # setting geometry
         self.setGeometry(100, 100, 400, 300)
-
         # calling method
         self.UiComponents()
-
         # showing all the widgets
-        self.show()
-
-    def function(self):
-        self.guiBox.setValue(1)
-        sp.welcomeSpeak()
-        QtWidgets.qApp.processEvents()
+        self.showFullScreen()
+        assistant()
 
 
     # method for widgets
@@ -43,7 +44,7 @@ class Window(QMainWindow):
         # Optional, resize label to image size
         label.resize(pixmap.width(), pixmap.height())
         # opening window in maximized size
-        self.showFullScreen()
+        # self.showFullScreen()
 
 
 # Press the green button in the gutter to run the script.
@@ -54,3 +55,4 @@ if __name__ == '__main__':
     window = Window()
     # start the app
     sys.exit(App.exec())
+
