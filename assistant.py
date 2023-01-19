@@ -1,14 +1,6 @@
-# importing speech recognition package from google api
-from asyncio import sleep
-import time
+from time import sleep
 
 import speech_recognition as sr
-import playsound  # to play saved mp3 file
-from gtts import gTTS  # google text to speech
-import os  # to save/open files
-
-# import wolframalpha  # to calculate strings into formula
-# from selenium import webdriver  # to control browser operations
 import requests
 import keyboard
 import pyttsx3
@@ -17,7 +9,7 @@ import vlc
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+engine.setProperty('voice', voices[0].id)
 
 
 #
@@ -28,26 +20,8 @@ def TextToSpeak(Text):
 
 def welcomeSpeak():
     engine.say("Hello there you are in assisted mode")
+    engine.say("Instructions")
     engine.runAndWait()
-
-
-# num = 1
-
-# def assistant_speaks(output):
-#     global num
-#     # num to rename every audio file
-#     # with different name to remove ambiguity
-#     num += 1
-#     print("PerSon : ", output)
-#
-#     toSpeak = gTTS(text=output, lang='en', slow=False)
-#     # saving the audio file given by google text to speech
-#     file = str(num) + ".mp3"
-#     toSpeak.save(file)
-#
-#     # playsound package is used to play the same file.
-#     playsound.playsound(file, True)
-#     os.remove(file)
 
 
 def get_audio(wait_seconds):
@@ -60,7 +34,7 @@ def get_audio(wait_seconds):
         TextToSpeak("Beeeep")
         # recording the audio using speech recognition
         audio = rObject.listen(source, phrase_time_limit=wait_seconds)
-    print("Stop.")  # limit 5 secs
+    print("Stop.")  # limit secs you pass
 
     try:
         # keyword = ['search for','exit','1','2','3','4','5','text book','Oliver Twist']
@@ -76,8 +50,9 @@ def get_audio(wait_seconds):
 
 def assistant():
     global p
+    back = False
     welcomeSpeak()
-    while (1):
+    while True:
         TextToSpeak("Tell the command after Beep Sound")
         command = get_audio(5)
         if command.__contains__("search for"):
@@ -88,13 +63,13 @@ def assistant():
                     "query": bookName
                 }
                 response = requests.get("http://35.200.151.7/v1/books/", params=parameters)
-                # dataset = response.json()['books']
                 dataset = json.loads(response.text)['books']
                 print(type(dataset))
                 if len(dataset) > 0:
                     break
                 else:
                     TextToSpeak("No matches Found!")
+
             i = 1
             for tempBook in dataset:
                 title = tempBook['title']
@@ -102,13 +77,19 @@ def assistant():
                 TextToSpeak(str(i) + ". Book Name is " + title)
                 i = i + 1
             TextToSpeak("Please Select your Audio Book Number in key board")
-            # print("i = " + str(i))
             value = 9
             digit = range(0, 9)
             while not (value in digit):
                 value = int(keyboard.read_key())
+                if value == 0:
+                    back = True
+                    print("Boolean True")
+                    break
                 value = value - 1
-                # print("Value is " + str(value))
+            if back:
+                print("Back triggers")
+                back = False
+                continue
             id = dataset[value]['id']
             response2 = requests.get("http://35.200.151.7/v1/books/" + str(id) + "/")
             jdata = json.loads(response2.text)
@@ -116,26 +97,58 @@ def assistant():
             print(chapters[0]['audio_url'])
             p = vlc.MediaPlayer("http://35.200.151.7/" + chapters[0]['audio_url'])
             p.play()
-            while (True):
-                if p.is_playing():
-                    if keyboard.is_pressed('a'):
-                        p.pause()
-                    elif keyboard.is_pressed(hotkey=keyboard.KEY_UP):
-                        print(p.audio_get_volume)
-                        p.audio_set_volume(100)
-                    elif keyboard.is_pressed(hotkey=keyboard.KEY_DOWN):
-                        print(p.audio_get_volume)
-                        p.audio_set_volume(40)
-                elif keyboard.is_pressed('b'):
+            currentVolume = 30
+            p.audio_set_volume(currentVolume)
+            while True:
+                if keyboard.is_pressed('esc'):
+                    p.stop()
                     break
+                elif p.is_playing():
+                    if keyboard.is_pressed('space'):
+                        p.pause()
+                        sleep(0.3)
+
+                    elif keyboard.is_pressed('up'):
+                        if currentVolume < 100:
+                            currentVolume = currentVolume + 10
+                            p.audio_set_volume(currentVolume)
+                            sleep(0.2)
+                        else:
+                            TextToSpeak("You reached the Maximum")
+
+                    elif keyboard.is_pressed('down'):
+                        if currentVolume > 10:
+                            currentVolume = currentVolume - 10
+                            p.audio_set_volume(currentVolume)
+                            sleep(0.2)
+                        else:
+                            TextToSpeak("Sound is Muted")
+
+                    elif keyboard.is_pressed('m'):
+                        if p.audio_get_volume() == 0:
+                            p.audio_set_volume(currentVolume)
+                            sleep(0.2)
+                        else:
+                            p.audio_set_volume(0)
+                            TextToSpeak("Sound is Muted")
+                            sleep(0.2)
+
+                    elif keyboard.is_pressed('left'):
+                        p.set_time(p.get_time() - 5000)
+                        sleep(0.2)
+
+                    elif keyboard.is_pressed('right'):
+                        p.set_time(p.get_time() + 5000)
+                        sleep(0.2)
+
                 else:
-                    p.play()
-                sleep(1)
+                    if keyboard.is_pressed('space'):
+                        p.play()
+                        p.audio_set_volume(currentVolume)
+                        sleep(0.2)
 
-            # while(vlc.libvlc_media_player_is_playing(p_mi=p)):
-
-
-
+            TextToSpeak("Player Stopped")
+            print("Player Stopped")
         elif command.__contains__("exit"):
             TextToSpeak("thank you for using AudiMax!")
             exit(100)
@@ -143,81 +156,4 @@ def assistant():
 
 # Driver Code
 if __name__ == "__main__":
-    global p
-    welcomeSpeak()
-    while (1):
-        TextToSpeak("Tell the command after Beep Sound")
-        command = get_audio(5)
-        if command.__contains__("search for"):
-            while True:
-                TextToSpeak("Please Tell me the book name after Beep Sound")
-                bookName = get_audio(8)
-                parameters = {
-                    "query": bookName
-                }
-                response = requests.get("http://35.200.151.7/v1/books/", params=parameters)
-                # dataset = response.json()['books']
-                dataset = json.loads(response.text)['books']
-                print(type(dataset))
-                if len(dataset) > 0:
-                    break
-                else:
-                    TextToSpeak("No matches Found!")
-            i = 1
-            for tempBook in dataset:
-                title = tempBook['title']
-                print(str(i) + ". Book Name is " + title)
-                TextToSpeak(str(i) + ". Book Name is " + title)
-                i = i + 1
-            TextToSpeak("Please Select your Audio Book Number in key board")
-            # print("i = " + str(i))
-            value = 9
-            digit = range(0, 9)
-            while not (value in digit):
-                value = int(keyboard.read_key())
-                value = value - 1
-                # print("Value is " + str(value))
-            id = dataset[value]['id']
-            response2 = requests.get("http://35.200.151.7/v1/books/" + str(id) + "/")
-            jdata = json.loads(response2.text)
-            chapters = jdata['books']['chapters']
-            print(chapters[0]['audio_url'])
-            p = vlc.MediaPlayer("http://35.200.151.7/" + chapters[0]['audio_url'])
-            p.play()
-            while(True):
-                if p.is_playing():
-                    if keyboard.is_pressed('a'):
-                        p.pause()
-                    elif keyboard.is_pressed(hotkey=keyboard.KEY_UP):
-                        print(p.audio_get_volume)
-                        p.audio_set_volume(100)
-                    elif keyboard.is_pressed(hotkey=keyboard.KEY_DOWN):
-                        print(p.audio_get_volume)
-                        p.audio_set_volume(40)
-                elif keyboard.is_pressed('b'):
-                    break
-                else:
-                    p.play()
-                sleep(1)
-
-            # while(vlc.libvlc_media_player_is_playing(p_mi=p)):
-
-
-
-        elif command.__contains__("exit"):
-            TextToSpeak("thank you for using AudiMax!")
-            exit(100)
-        # else:
-        #     TextToSpeak("Please Tell me a Valid Command")
-
-    # while (1):
-    #
-    #     assistant_speaks("What can i do for you?")
-    #     # text = get_audio().lower()
-    #     text = "hello guys"
-    #     if text == 0:
-    #         continue
-    #
-    #     if "exit" in str(text) or "bye" in str(text) or "sleep" in str(text):
-    #         assistant_speaks("Ok bye, " + name + '.')
-    #         break
+    assistant()

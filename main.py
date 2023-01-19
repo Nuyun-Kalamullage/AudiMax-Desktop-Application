@@ -1,5 +1,4 @@
 # importing PyQt5 for gui
-import time
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
@@ -44,7 +43,6 @@ class Window(QMainWindow):
         # Optional, resize label to image size
         label.resize(pixmap.width(), pixmap.height())
         # opening window in maximized size
-        # self.showFullScreen()
 
 
 # Press the green button in the gutter to run the script.
