@@ -1,12 +1,12 @@
 import json
 import requests
 from assistant import TextToSpeak
-from search import get_id
+import random
 
 domain = "http://35.200.151.7/"
 
 
-def recent_book():
+def play_random_book():
     value = 0
     response = requests.get(domain + "v1/books/")
     dataset = json.loads(response.text)['books']
@@ -15,12 +15,7 @@ def recent_book():
         TextToSpeak("No matches Found!")
         return 0
     else:
-        rcResult = get_id(dataset)
-        print(rcResult)
-        if rcResult[0] == 0:
-            value = rcResult[1]
-        else:
-            return 0
+        value = random.randint(0, len(dataset)-1)
         id = dataset[value]['id']
         response2 = requests.get(domain + "v1/books/" + str(id) + "/")
         jdata = json.loads(response2.text)
@@ -29,5 +24,5 @@ def recent_book():
         return chapters
 
 
-if __name__ == "__main__":
-    recent_book()
+if __name__ == '__main__':
+    play_random_book()

@@ -1,3 +1,4 @@
+import sys
 from time import sleep
 
 import speech_recognition as sr
@@ -10,22 +11,18 @@ engine.setProperty('voice', voices[0].id)
 
 #
 def TextToSpeak(Text):
-    # pyttsx3.speak(Text)
     if engine.inLoop:
         engine.endLoop()
-    # engine.runAndWait()
     engine.say(Text)
     engine.runAndWait()
 
 
 def MediaPlayerToSpeak(Text):
-    # pyttsx3.speak(Text)
-    if engine.inLoop:
-        engine.endLoop()
-    # engine.runAndWait()
-    engine.say(Text)
-    engine.runAndWait()
-    sleep(1)
+    #   pyttsx3.speak(Text)
+        if engine.inLoop:
+            engine.endLoop()
+        engine.say(Text)
+        engine.runAndWait()
 
 
 def welcomeSpeak():

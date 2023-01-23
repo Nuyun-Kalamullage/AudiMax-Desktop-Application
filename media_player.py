@@ -4,28 +4,30 @@ from assistant import TextToSpeak,MediaPlayerToSpeak
 import keyboard
 import requests
 import vlc
-from threading import Thread
+from threading import active_count
 
 domain = "http://35.200.151.7/"
 keyArray = ['up', 'down', 'right', 'left', 'space', 'm', 'esc', 'page down', 'page up']
+
 
 def player(chapters):
     p = vlc.MediaPlayer()
     currentVolume = 50
     p.audio_set_volume(currentVolume)
-    player = vlc.Instance()
-    media_list = player.media_list_new()
+    playerIns = vlc.Instance()
+    media_list = playerIns.media_list_new()
     i = 0
     for url in chapters:
-        print(url)
-        media_list.add_media(player.media_new(domain + url['audio_url']))
+        # print(url)
+        media_list.add_media(playerIns.media_new(domain + url['audio_url']))
         i += 1
     # print(f"i iis {i}")
     p.set_media(media_list[0])
     p.play()
     current_chapter = 0
-    print(f"Chapter {current_chapter+1} playing>>>>")
+    print(f"Chapter {current_chapter+1} playing >>>>")
     while True:
+        print(active_count())
         key = keyboard.read_key()
         if key in keyArray:
             if key == "esc":
@@ -45,7 +47,7 @@ def player(chapters):
                         TextToSpeak("Playing chapter one")
                         current_chapter = 0
                         p.set_media(media_list[current_chapter])
-                print(f"Chapter {current_chapter+1} playing>>>>")
+                print(f"Chapter {current_chapter+1} playing >>>>")
                 p.play()
                 sleep(0.2)
 
@@ -61,14 +63,12 @@ def player(chapters):
                         TextToSpeak("Playing last chapter")
                         current_chapter = i - 1
                         p.set_media(media_list[current_chapter])
-                print(f"Chapter {current_chapter+1} playing>>>>")
+                print(f"Chapter {current_chapter+1} playing >>>>")
                 p.play()
                 sleep(0.2)
 
             elif key == 'space':
                 p.set_pause(p.is_playing())
-                t = Thread(target=MediaPlayerToSpeak, args=("space Triggers",))
-                t.start()
                 sleep(0.2)
 
             elif key == 'up':
@@ -76,19 +76,15 @@ def player(chapters):
                     currentVolume = currentVolume + 10
                     p.audio_set_volume(currentVolume)
                 else:
-                    # TextToSpeak("You reached the Maximum")
-                    t = Thread(target=MediaPlayerToSpeak, args=("You reached the Maximum",))
-                    t.start()
+                    TextToSpeak("You reached the Maximum")
                 sleep(0.2)
 
             elif key == 'down':
-                if currentVolume > 10:
+                if currentVolume >= 10:
                     currentVolume = currentVolume - 10
                     p.audio_set_volume(currentVolume)
                 else:
-                    t = Thread(target=MediaPlayerToSpeak, args=("Sound is Muted",))
-                    t.start()
-                    # TextToSpeak("Sound is Muted")
+                    TextToSpeak("Sound is Muted")
                 sleep(0.2)
 
             elif key == 'm':
@@ -96,9 +92,7 @@ def player(chapters):
                     p.audio_set_volume(currentVolume)
                 else:
                     p.audio_set_volume(0)
-                    # TextToSpeak("Sound is Muted")
-                    t = Thread(target=MediaPlayerToSpeak, args=("Sound is Muted",))
-                    t.start()
+                    TextToSpeak("Sound is Muted")
                 sleep(0.2)
 
             elif key == 'left':
