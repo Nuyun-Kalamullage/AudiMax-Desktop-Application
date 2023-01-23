@@ -1,11 +1,7 @@
 from time import sleep
 
 import speech_recognition as sr
-import requests
-import keyboard
 import pyttsx3
-import json
-import vlc
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
@@ -14,8 +10,22 @@ engine.setProperty('voice', voices[0].id)
 
 #
 def TextToSpeak(Text):
+    # pyttsx3.speak(Text)
+    if engine.inLoop:
+        engine.endLoop()
+    # engine.runAndWait()
     engine.say(Text)
     engine.runAndWait()
+
+
+def MediaPlayerToSpeak(Text):
+    # pyttsx3.speak(Text)
+    if engine.inLoop:
+        engine.endLoop()
+    # engine.runAndWait()
+    engine.say(Text)
+    engine.runAndWait()
+    sleep(1)
 
 
 def welcomeSpeak():
@@ -42,7 +52,6 @@ def get_audio(wait_seconds):
         # text1 = rObject.recognize_sphinx(audio, language='en-US',keyword_entries=keyword)
         print("You : ", text)
         return text
-
     except:
         TextToSpeak("Could not understand your audio, PLease try again !")
         return "all"

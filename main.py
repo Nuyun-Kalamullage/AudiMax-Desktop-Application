@@ -1,11 +1,7 @@
-# importing PyQt5 for gui
-
-from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
-from PIL import ImageTk, Image
 import application as app
 
 
@@ -28,7 +24,6 @@ class Window(QMainWindow):
         # showing all the widgets
         self.showFullScreen()
         assistant()
-
 
     # method for widgets
     def UiComponents(self):
@@ -53,4 +48,3 @@ if __name__ == '__main__':
     window = Window()
     # start the app
     sys.exit(App.exec())
-

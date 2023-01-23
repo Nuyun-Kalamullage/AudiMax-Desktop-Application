@@ -1,12 +1,12 @@
 import json
-from time import sleep
-
-import keyboard
 import requests
-domain = "http://35.200.151.7/"
-from assistant import TextToSpeak, get_audio
+from assistant import TextToSpeak
 from search import get_id
-def recentbook():
+
+domain = "http://35.200.151.7/"
+
+
+def recent_book():
     value = 0
     response = requests.get(domain + "v1/books/")
     dataset = json.loads(response.text)['books']
@@ -14,15 +14,19 @@ def recentbook():
     if len(dataset) <= 0:
         TextToSpeak("No matches Found!")
         return 0
-    result = get_id(dataset)
-    if result[0] == 0:
-        value = result[1]
+    rcResult = get_id(dataset)
+    print(rcResult)
+    if rcResult[0] == 0:
+        value = rcResult[1]
     else:
         return 0
     id = dataset[value]['id']
-    response2 = requests.get(domain + "books/" + str(id) + "/")
+    response2 = requests.get(domain + "v1/books/" + str(id) + "/")
     jdata = json.loads(response2.text)
     chapters = jdata['books']['chapters']
     print(chapters[0]['audio_url'])
     return chapters
 
+
+if __name__ == "__main__":
+    recent_book()

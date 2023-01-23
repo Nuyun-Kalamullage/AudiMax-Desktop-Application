@@ -1,9 +1,6 @@
 import json
-from time import sleep
-
 import keyboard
 import requests
-import vlc
 
 from assistant import TextToSpeak, get_audio
 
@@ -34,6 +31,7 @@ def get_id(dataset):
         back = False
         return -1, 0
     return 0, value
+
 
 def search():
     value = 0
