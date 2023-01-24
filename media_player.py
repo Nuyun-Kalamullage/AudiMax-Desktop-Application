@@ -76,6 +76,7 @@ def player(chapters):
                     currentVolume = currentVolume + 10
                     p.audio_set_volume(currentVolume)
                 else:
+                    p.audio_set_volume(currentVolume)
                     TextToSpeak("You reached the Maximum")
                 sleep(0.2)
 
