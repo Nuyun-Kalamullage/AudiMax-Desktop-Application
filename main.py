@@ -5,7 +5,7 @@ import sys
 import application as app
 
 
-def assistant():
+def assistant():  # make the function and delay it until window start
     app.TextToSpeak("")
     app.TextToSpeak("")
     app.TextToSpeak("")
@@ -13,7 +13,7 @@ def assistant():
     app.assistant()
 
 
-class Window(QMainWindow):
+class Window(QMainWindow):  # class for QT window
     def __init__(self):
         super().__init__()
         self.setWindowFlag(Qt.FramelessWindowHint)
