@@ -1,10 +1,9 @@
 import json
 from time import sleep
-from assistant import TextToSpeak,MediaPlayerToSpeak
+from assistant import TextToSpeak
 import keyboard
 import requests
 import vlc
-from threading import active_count
 
 domain = "https://audimax.xyz/"
 keyArray = ['up', 'down', 'right', 'left', 'space', 'm', 'esc', 'page down', 'page up']
@@ -18,17 +17,13 @@ def player(chapters):
     media_list = playerIns.media_list_new()
     i = 0
     for url in chapters:
-        # print(url)
         media_list.add_media(playerIns.media_new(url['audio_url']))
         i += 1
-    # print(f"i iis {i}")
     p.set_media(media_list[0])
-
     p.play()
     current_chapter = 0
     print(f"Chapter {current_chapter+1} playing >>>>")
     while True:
-        print(active_count())
         key = keyboard.read_key()
         if key in keyArray:
             if key == "esc":

@@ -1,4 +1,3 @@
-from time import sleep
 from assistant import welcomeSpeak, TextToSpeak, get_audio
 import search as sh
 import get_recent as rc
@@ -8,7 +7,6 @@ import guide as gd
 
 
 def assistant():
-    back = False
     welcomeSpeak()
     while True:
         TextToSpeak("Tell the command after Beep Sound")
@@ -18,26 +16,26 @@ def assistant():
             if chapters == 0:
                 continue
             else:
+                TextToSpeak("Playing Selected Book")
                 media_player.player(chapters)
 
         elif command.__contains__("play") and command.__contains__("book"):
-            print("play random book")
             chapters = pr.play_random_book()
             if chapters == 0:
                 continue
             else:
+                TextToSpeak("Playing Random Book")
                 media_player.player(chapters)
 
         elif command.__contains__("show") and command.__contains__("book"):
-            print("show recent book")
             chapters = rc.recent_book()
             if chapters == 0:
                 continue
             else:
+                TextToSpeak("Playing Selected Book")
                 media_player.player(chapters)
 
         elif command.__contains__("help"):
-            print("play guide text via assistant")
             return_result = gd.guide_help()
             if return_result == 0:
                 continue
