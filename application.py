@@ -6,13 +6,14 @@ import media_player
 import play_random as pr
 import guide as gd
 
+
 def assistant():
     back = False
     welcomeSpeak()
     while True:
         TextToSpeak("Tell the command after Beep Sound")
         command = get_audio(5)
-        if command.__contains__("search for"):
+        if command.__contains__("search"):
             chapters = sh.search()
             if chapters == 0:
                 continue

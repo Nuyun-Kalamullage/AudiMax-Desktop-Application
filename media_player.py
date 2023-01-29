@@ -6,7 +6,7 @@ import requests
 import vlc
 from threading import active_count
 
-domain = "http://35.200.151.7/"
+domain = "https://audimax.xyz/"
 keyArray = ['up', 'down', 'right', 'left', 'space', 'm', 'esc', 'page down', 'page up']
 
 
@@ -19,10 +19,11 @@ def player(chapters):
     i = 0
     for url in chapters:
         # print(url)
-        media_list.add_media(playerIns.media_new(domain + url['audio_url']))
+        media_list.add_media(playerIns.media_new(url['audio_url']))
         i += 1
     # print(f"i iis {i}")
     p.set_media(media_list[0])
+
     p.play()
     current_chapter = 0
     print(f"Chapter {current_chapter+1} playing >>>>")
@@ -106,7 +107,7 @@ def player(chapters):
 
 
 if __name__ == "__main__":
-    response2 = requests.get(domain + "v1/books/" + str(2) + "/")
+    response2 = requests.get(domain + "v1/books/" + str(4) + "/")
     jdata = json.loads(response2.text)
     chapters = jdata['books']['chapters']
     player(chapters)

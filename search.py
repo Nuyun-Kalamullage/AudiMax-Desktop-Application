@@ -4,8 +4,7 @@ import requests
 
 from assistant import TextToSpeak, get_audio
 
-domain = "http://35.200.151.7/"
-
+domain = "https://audimax.xyz/"
 
 def get_id(dataset):
     back = False

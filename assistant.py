@@ -1,6 +1,8 @@
 import speech_recognition as sr
 import pyttsx3
+from playsound import playsound
 
+OUTPUT_DIR = "D:\PycharmProjects\Voice_Application\\res\sounds\\beep.mp3"
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
@@ -24,7 +26,7 @@ def MediaPlayerToSpeak(Text):
 
 def welcomeSpeak():
     engine.say("Hello there you are in assisted mode")
-    engine.say("Instructions")
+    engine.say("for Instructions you can say \"Help\" command!")
     engine.runAndWait()
 
 
@@ -34,11 +36,9 @@ def get_audio(wait_seconds):
 
     with sr.Microphone() as source:
         rObject.adjust_for_ambient_noise(source)
-        print("Speak...")
-        TextToSpeak("Beeeep")
+        playsound(OUTPUT_DIR)
         # recording the audio using speech recognition
         audio = rObject.listen(source, phrase_time_limit=wait_seconds)
-    print("Stop.")  # limit secs you pass
 
     try:
         # keyword = ['search for','exit','1','2','3','4','5','text book','Oliver Twist']

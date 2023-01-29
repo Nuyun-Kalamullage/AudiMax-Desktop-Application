@@ -3,7 +3,7 @@ import requests
 from assistant import TextToSpeak
 import random
 
-domain = "http://35.200.151.7/"
+domain = "https://audimax.xyz/"
 
 
 def play_random_book():
@@ -15,7 +15,10 @@ def play_random_book():
         TextToSpeak("No matches Found!")
         return 0
     else:
-        value = random.randint(0, len(dataset)-1)
+        if len(dataset) == 1:
+            value == 0
+        else:
+            value = random.randint(0, len(dataset)-1)
         id = dataset[value]['id']
         response2 = requests.get(domain + "v1/books/" + str(id) + "/")
         jdata = json.loads(response2.text)

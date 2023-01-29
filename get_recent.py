@@ -3,7 +3,7 @@ import requests
 from assistant import TextToSpeak
 from search import get_id
 
-domain = "http://35.200.151.7/"
+domain = "https://audimax.xyz/"
 
 
 def recent_book():

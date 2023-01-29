@@ -2,10 +2,11 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
+from win32api import GetSystemMetrics
 import application as app
 
 
-def assistant():  # make the function and delay it until window start
+def assistant():
     app.TextToSpeak("")
     app.TextToSpeak("")
     app.TextToSpeak("")
@@ -13,7 +14,7 @@ def assistant():  # make the function and delay it until window start
     app.assistant()
 
 
-class Window(QMainWindow):  # class for QT window
+class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -36,7 +37,7 @@ class Window(QMainWindow):  # class for QT window
         # adding image to label
         label.setPixmap(pixmap)
         # Optional, resize label to image size
-        label.resize(pixmap.width(), pixmap.height())
+        label.resize(GetSystemMetrics(0), GetSystemMetrics(1))
         # opening window in maximized size
 
 
