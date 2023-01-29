@@ -1,3 +1,5 @@
+import multiprocessing
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -10,8 +12,10 @@ def assistant():
     app.TextToSpeak("")
     app.TextToSpeak("")
     app.TextToSpeak("")
-    # sp.welcomeSpeak()
     app.assistant()
+
+
+assistantProcess = multiprocessing.Process(target=assistant, args=())
 
 
 class Window(QMainWindow):
@@ -24,21 +28,29 @@ class Window(QMainWindow):
         self.UiComponents()
         # showing all the widgets
         self.showFullScreen()
-        assistant()
+        # assistant()
+        if not assistantProcess.is_alive():
+            assistantProcess.start()
 
     # method for widgets
     def UiComponents(self):
         # creating label
         label = QLabel(self)
         # setting geometry to label
-        label.setGeometry(0, 0, 600, 400)
+        label.setGeometry(0, 0, GetSystemMetrics(0), GetSystemMetrics(1))
         # loading image
-        pixmap = QPixmap('res/images/asst-bg.jpg')
-        # adding image to label
+        pixmap = QPixmap('res/images/audimax_assisted_bg.png')
         label.setPixmap(pixmap)
-        # Optional, resize label to image size
+        label.setScaledContents(True)
         label.resize(GetSystemMetrics(0), GetSystemMetrics(1))
-        # opening window in maximized size
+
+        # label1 = QLabel(self)
+        # label1.setGeometry(0, 0, 500, 500)
+        # movie = QMovie("res/images/bg-assited.gif")
+        # label1.setMovie(movie)
+        # # label1.setScaledContents(True)
+        # label1.resize(GetSystemMetrics(0), GetSystemMetrics(1))
+        # movie.start()
 
 
 # Press the green button in the gutter to run the script.
@@ -48,4 +60,6 @@ if __name__ == '__main__':
     # create the instance of our Window
     window = Window()
     # start the app
-    sys.exit(App.exec())
+    code = App.exec()
+    assistantProcess.terminate()
+    sys.exit(code)

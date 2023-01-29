@@ -10,7 +10,7 @@ def assistant():
     welcomeSpeak()
     while True:
         TextToSpeak("Tell the command after Beep Sound")
-        command = get_audio(5)
+        command = get_audio(7)
         if command.__contains__("search"):
             chapters = sh.search()
             if chapters == 0:

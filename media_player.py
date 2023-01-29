@@ -102,7 +102,9 @@ def player(chapters):
 
 
 if __name__ == "__main__":
-    response2 = requests.get(domain + "v1/books/" + str(4) + "/")
+    response2 = requests.get(domain + "v1/books/" + str(5) + "/")
     jdata = json.loads(response2.text)
+    print(jdata)
     chapters = jdata['books']['chapters']
+    print(chapters)
     player(chapters)

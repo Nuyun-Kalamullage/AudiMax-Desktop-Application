@@ -19,12 +19,15 @@ def guide_help():
     global back, speakProcess
     while True:
         key = '0'
+        speakProcess = multiprocessing.Process(target=mainMenu, args=())
         while key not in ['1', '2', '3', '4', '5']:
-            speakProcess = multiprocessing.Process(target=mainMenu, args=())
-            speakProcess.start()
-            print('enter number')
+            if not speakProcess.is_alive():
+                speakProcess.start()
             key = str(keyboard.read_key())
-            print(key)
+            if key == 'esc':
+                speakProcess.terminate()
+                TextToSpeak("Going Back to Main menu")
+                return 0
         speakProcess.terminate()
 
         if key == '1':  # voice command menu voiceover
@@ -59,12 +62,13 @@ def guide_help():
         elif key == '4':  # about application voiceover
             TextToSpeak("""             
             AudiMax is a digital library which contains audio books and pdfs for the readers. Also, 
-            it is a great opportunity for the writers who have a passion to share their ideology with the world 
+            it is a great opportunity for the writers who have a passion to share their ideology with the world,
             because they can easily publish their books to the digital space with our platform Speciality of AudiMax 
             is, this desktop application has voice assistant features and keyboard bound navigation. 
             """)
 
         elif key == '5':
+            TextToSpeak("Going Back to Main menu")
             return 0
 
         else:
