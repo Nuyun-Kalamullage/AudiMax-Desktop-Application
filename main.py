@@ -1,5 +1,4 @@
 import multiprocessing
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -13,6 +12,7 @@ def assistant():
     app.TextToSpeak("")
     app.TextToSpeak("")
     app.assistant()
+    print("hello world")
 
 
 assistantProcess = multiprocessing.Process(target=assistant, args=())
@@ -29,8 +29,6 @@ class Window(QMainWindow):
         # showing all the widgets
         self.showFullScreen()
         # assistant()
-        if not assistantProcess.is_alive():
-            assistantProcess.start()
 
     # method for widgets
     def UiComponents(self):
@@ -53,13 +51,22 @@ class Window(QMainWindow):
         # movie.start()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
+def pyQtWindow():
     # create pyqt5 app
     App = QApplication(sys.argv)
     # create the instance of our Window
     window = Window()
     # start the app
-    code = App.exec()
-    assistantProcess.terminate()
-    sys.exit(code)
+    sys.exit(App.exec())
+
+
+windowProcess = multiprocessing.Process(target=pyQtWindow, args=())
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    windowProcess.start()
+    assistantProcess.start()
+    assistantProcess.join()
+    windowProcess.terminate()
+    sys.exit(120)
