@@ -31,7 +31,7 @@ def player(chapters):
                 TextToSpeak("Player Stopped")
                 break
 
-            elif key == 'page down':
+            elif key == 'page up':
                 if (current_chapter + 1) < i:
                     current_chapter += 1
                     p.set_media(media_list[current_chapter])
@@ -47,7 +47,7 @@ def player(chapters):
                 p.play()
                 sleep(0.2)
 
-            elif key == 'page up':
+            elif key == 'page down':
                 if (current_chapter - 1) >= 0:
                     current_chapter -= 1
                     p.set_media(media_list[current_chapter])
