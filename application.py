@@ -41,7 +41,7 @@ def assistant():
                 continue
         elif command.__contains__("exit") or command.__contains__("quit"):
             TextToSpeak("thank you for using AudiMax!")
-            return 100
+            return 0
 
 
 # Driver Code

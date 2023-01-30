@@ -1,4 +1,6 @@
 import multiprocessing
+from time import sleep
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -12,7 +14,6 @@ def assistant():
     app.TextToSpeak("")
     app.TextToSpeak("")
     app.assistant()
-    print("hello world")
 
 
 assistantProcess = multiprocessing.Process(target=assistant, args=())
@@ -67,6 +68,9 @@ windowProcess = multiprocessing.Process(target=pyQtWindow, args=())
 if __name__ == '__main__':
     windowProcess.start()
     assistantProcess.start()
-    assistantProcess.join()
+    while windowProcess.is_alive() and assistantProcess.is_alive():
+        sleep(1)
     windowProcess.terminate()
-    sys.exit(120)
+    assistantProcess.terminate()
+    app.TextToSpeak("Audi-Max Shutting Down")
+    sys.exit(143)
