@@ -1,8 +1,7 @@
-PyAudio~=0.2.13
-PyQt5~=5.15.8
-pypiwin32~=223
-pywin32~=305
-keyboard~=0.13.5
-requests~=2.28.2
-pyttsx3~=2.90
-python-vlc==3.0.18121
+PyQt5
+SpeechRecognition
+pypiwin32
+pyttsx3
+PyAudio
+keyboard
+python-vlc

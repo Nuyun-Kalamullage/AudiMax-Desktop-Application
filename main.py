@@ -66,11 +66,12 @@ windowProcess = multiprocessing.Process(target=pyQtWindow, args=())
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     windowProcess.start()
     assistantProcess.start()
     while windowProcess.is_alive() and assistantProcess.is_alive():
         sleep(1)
-    windowProcess.terminate()
-    assistantProcess.terminate()
+    for process in multiprocessing.process.active_children():
+        process.terminate()
     app.TextToSpeak("Audi-Max Shutting Down")
     sys.exit(143)

@@ -10,8 +10,8 @@ engine.setProperty('voice', voices[1].id)
 
 #
 def TextToSpeak(Text):
-    if engine.inLoop:
-        engine.endLoop()
+    # if engine.inLoop:
+    #     engine.endLoop()
     engine.say(Text)
     engine.runAndWait()
 
