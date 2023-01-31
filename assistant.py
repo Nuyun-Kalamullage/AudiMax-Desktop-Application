@@ -18,7 +18,7 @@ def TextToSpeak(Text):
 
 def welcomeSpeak():
     engine.say("Hello there you are in assisted mode")
-    engine.say("for Instructions you can say \"Get Help\" command!")
+    engine.say("for Instructions you can say \"Help me\" command!")
     engine.runAndWait()
 
 

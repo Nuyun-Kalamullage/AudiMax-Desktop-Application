@@ -34,10 +34,10 @@ def guide_help():
             TextToSpeak("""
                               Here are the commands in Main-Menu
                         Command \"Search for book\" : this command help to search Audio Books
-                        Command \"play recent book\" : this command help to play a random Audio Book
-                        Command \"show recent books\" : this command help to show recent Audio Books
-                        Command \"get help\" : this command shows help menu
-                        Command \"exit Here\" or \"quit Here\" : this both commands help you to quit the application 
+                        Command \"play a random book\" : this command help to play a random Audio Book
+                        Command \"show the books\" : this command help to show recent Audio Books
+                        Command \"Help me\" : this command shows help menu
+                        Command \"exit from Here\" or \"quit from Here\" : this both commands help you to quit the application 
                         """)
 
         elif key == '2':  # key binding voiceover
