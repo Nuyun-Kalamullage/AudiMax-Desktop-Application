@@ -1,4 +1,3 @@
-import logging
 import multiprocessing
 from time import sleep
 
@@ -7,7 +6,16 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
 from win32api import GetSystemMetrics
-import application as app
+try:
+    import application as app
+except Exception as e:
+    from assistant import TextToSpeak
+    print(f"error: {e}\n")
+    print(
+        "Missing Vlc Media Player!!!\n Make sure VlC player is Download and in the \"program files\" directory, before running this program\nIf not download here: https://www.videolan.org/vlc/download-windows.html ")
+    TextToSpeak("Missing Vlc Media Player!!!\n Make sure VlC player is Download and in the program files directory, before running this program. here is the link")
+    sleep(10)
+    sys.exit(404)
 
 
 def assistant():
