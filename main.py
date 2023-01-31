@@ -1,3 +1,4 @@
+import logging
 import multiprocessing
 from time import sleep
 
@@ -74,4 +75,6 @@ if __name__ == '__main__':
     for process in multiprocessing.process.active_children():
         process.terminate()
     app.TextToSpeak("Audi-Max Shutting Down")
-    sys.exit(143)
+    sys.exit(100)
+
+

@@ -35,6 +35,6 @@ def get_audio(wait_seconds):
         text = rObject.recognize_google(audio, language='en-US')
         print("You : ", text)
         return text
-    except:
+    except Exception as e:
         TextToSpeak("Could not understand your audio, PLease try again !")
         return "all"
