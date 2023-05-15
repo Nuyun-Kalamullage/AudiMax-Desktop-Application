@@ -1,5 +1,6 @@
 # AudiMax
-!['audimax ss'](https://images2.imgbox.com/dc/0e/EBBXJTpF_o.png)
+!['audimax ss'](https://github.com/Nuyun-Kalamullage/AudiMax-Desktop-Application/blob/master/res/images/cover-img.png)
+
 * <h3>“A Digital Library beyond the limitations”</h3>
 
 > AudiMax is a digital library which contains audio books and pdfs for the readers. Also, it is a great opportunity for the writers who have a passion to share their ideology with the world because they can easily publish their books to the digital space with our platform Speciality of AudiMax is, this desktop application has voice assistant features and keyboard bound navigation. So even the visually impaired people can experience the knowledge in the books by themselves.
